@@ -1,52 +1,107 @@
+<script setup>
+import { computed, ref } from 'vue'
+
+const filtroSelecionado = ref('Todos')
+const busca = ref('')
+
+import geoformImage from '@/assets/images/Geoform.png'
+import incraImage from '@/assets/images/incra.png'
+import escolaImage from '@/assets/images/escola.png'
+
+const projetos = [
+  {
+    nome: 'Geoform',
+    categoria: 'Produto',
+    descricao: 'Mapas e visualizações inteligentes para facilitar decisões com base em dados.',
+    link: 'https://csa.cnat.ifrn.edu.br/projetos/geoform/',
+    imagem: geoformImage
+  },
+  {
+    nome: 'Mais Incra',
+    categoria: 'Notícia',
+    descricao: 'Portal com foco em gestão e transparência digital para serviços públicos.',
+    link: 'https://csa.cnat.ifrn.edu.br/projetos/mais-incra/',
+    imagem: incraImage
+  },
+  {
+    nome: 'Escola de Governo',
+    categoria: 'Post',
+    descricao: 'Plataforma de capacitação e conteúdo educacional com navegação simples.',
+    link: 'https://csa.cnat.ifrn.edu.br/projetos/escola-de-governo/',
+    imagem: escolaImage
+  }
+]
+
+const categorias = ['Todos', ...new Set(projetos.map((item) => item.categoria))]
+
+const projetosFiltrados = computed(() => {
+  return projetos.filter((projeto) => {
+    const condicaoCategoria =
+      filtroSelecionado.value === 'Todos' || projeto.categoria === filtroSelecionado.value
+    const termo = busca.value.trim().toLowerCase()
+    const condicaoBusca =
+      termo.length === 0 ||
+      projeto.nome.toLowerCase().includes(termo) ||
+      projeto.descricao.toLowerCase().includes(termo)
+
+    return condicaoCategoria && condicaoBusca
+  })
+})
+</script>
+
 <template>
   <section class="section projects">
     <div class="container">
       <span class="eyebrow">Projetos</span>
-      <h2>Cases e experiências recentes</h2>
+      <h2>Lista de controle de conteúdo</h2>
       <p class="section-subtitle">
-        Projetos reais desenvolvidos com foco em design, usabilidade e performance.
+        Filtre por tipo de informação e pesquise rapidamente para manter apenas o que importa no campo de visão.
       </p>
+
+      <div class="projects-toolbar">
+        <input
+          v-model="busca"
+          type="search"
+          class="projects-search"
+          placeholder="Buscar por projeto, produto, notícia ou post"
+          aria-label="Buscar projeto"
+        >
+
+        <div class="projects-filters" role="tablist" aria-label="Filtro por categoria">
+          <button
+            v-for="categoria in categorias"
+            :key="categoria"
+            type="button"
+            class="filter-chip"
+            :class="{ active: filtroSelecionado === categoria }"
+            @click="filtroSelecionado = categoria"
+          >
+            {{ categoria }}
+          </button>
+        </div>
+      </div>
 
       <div class="projects-grid">
         <a
-          href="https://csa.cnat.ifrn.edu.br/projetos/geoform/"
+          v-for="projeto in projetosFiltrados"
+          :key="projeto.nome"
+          :href="projeto.link"
           target="_blank"
           rel="noreferrer"
           class="project-card"
         >
-          <img src="@/assets/images/Geoform.png" alt="Capa do projeto Geoform">
+          <img :src="projeto.imagem" :alt="`Capa do projeto ${projeto.nome}`">
           <div class="project-info">
-            <h3>Geoform</h3>
-            <span>Mapas e visualizações inteligentes</span>
-          </div>
-        </a>
-
-        <a
-          href="https://csa.cnat.ifrn.edu.br/projetos/mais-incra/"
-          target="_blank"
-          rel="noreferrer"
-          class="project-card"
-        >
-          <img src="@/assets/images/incra.png" alt="Capa do projeto Mais Incra">
-          <div class="project-info">
-            <h3>Mais Incra</h3>
-            <span>Gestão e transparência digital</span>
-          </div>
-        </a>
-
-        <a
-          href="https://csa.cnat.ifrn.edu.br/projetos/escola-de-governo/"
-          target="_blank"
-          rel="noreferrer"
-          class="project-card"
-        >
-          <img src="@/assets/images/escola.png" alt="Capa do projeto Escola de Governo">
-          <div class="project-info">
-            <h3>Escola de Governo</h3>
-            <span>Capacitação e conhecimento</span>
+            <small class="project-category">{{ projeto.categoria }}</small>
+            <h3>{{ projeto.nome }}</h3>
+            <span>{{ projeto.descricao }}</span>
           </div>
         </a>
       </div>
+
+      <p v-if="projetosFiltrados.length === 0" class="empty-state">
+        Nenhum resultado encontrado. Tente outro filtro ou termo de busca.
+      </p>
     </div>
   </section>
 </template>
