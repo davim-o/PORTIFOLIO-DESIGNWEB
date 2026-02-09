@@ -88,7 +88,7 @@ a {
 }
 
 .nav-link:hover,
-.router-link-active {
+.nav-link.router-link-exact-active {
   color: #fff;
 }
 
@@ -363,4 +363,118 @@ a {
   .hero {
     padding-top: 50px;
   }
+}
+
+
+.control-list {
+  margin-top: 52px;
+  background: var(--surface);
+  border-radius: 20px;
+  padding: 24px;
+  box-shadow: var(--shadow);
+}
+
+.control-list h3 {
+  margin-bottom: 8px;
+}
+
+.control-toolbar {
+  display: grid;
+  gap: 12px;
+  margin: 12px 0 18px;
+}
+
+.control-search {
+  border-radius: 12px;
+  border: 1px solid var(--border);
+  padding: 11px 14px;
+  font: inherit;
+}
+
+.control-filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.filter-btn {
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  padding: 8px 14px;
+  background: #fff;
+  font: inherit;
+  cursor: pointer;
+}
+
+.filter-btn.active {
+  background: var(--primary);
+  border-color: var(--primary);
+  color: #fff;
+}
+
+.control-items {
+  list-style: none;
+  display: grid;
+  gap: 12px;
+}
+
+.control-item {
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+}
+
+.control-item h4 {
+  margin-bottom: 4px;
+}
+
+.control-item small {
+  color: var(--muted);
+}
+
+.status-pill {
+  border-radius: 999px;
+  padding: 4px 10px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.status-live {
+  background: #dcfce7;
+  color: #166534;
+}
+
+.status-review {
+  background: #fef3c7;
+  color: #92400e;
+}
+
+.status-draft {
+  background: #e5e7eb;
+  color: #374151;
+}
+
+.control-empty {
+  border: 1px dashed var(--border);
+  border-radius: 12px;
+  padding: 16px;
+  color: var(--muted);
+}
+
+.form-feedback {
+  font-size: 0.95rem;
+  font-weight: 500;
+}
+
+.is-success {
+  color: #166534;
+}
+
+.is-error {
+  color: #b91c1c;
 }
